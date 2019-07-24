@@ -38,40 +38,54 @@ class Game extends Component {
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    })
+      xIsNext: step % 2 === 0
+    });
   }
 
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const statusMessage = document.querySelector(".status");
 
     const moves = history.map((step, move) => {
       const desc = move ? "Go to move #" + move : "Go to game start";
       return (
         <li key={move}>
-          <button className="move-button" onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className="move-button" onClick={() => this.jumpTo(move)}>
+            {desc}
+          </button>
         </li>
-      )
-    })
+      );
+    });
 
     let status;
     if (winner) {
       status = "Winner: " + winner;
+      statusMessage.style.color = "#f7c224";
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
     return (
-      <div className="game">
-      <h1 className="block">Tic Tac Toe</h1>
-        <div className="game-board">
-          <Board squares={current.squares} onClick={(i) => this.handleClick(i)} />
+      <div className="frame">
+        <h1>Tic Tac Toe</h1>
+        <div className="game">
+        <div className="left-side">
+        <div className="status">{status}</div>
+          <div className="game-board clearfix">
+            <Board
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+            />
+          </div>
         </div>
-        <div className="game-info">
-          <div className="status">{status}</div>
-          <ul>{moves}</ul>
+        <div className="right-side">
+          <div className="game-info">
+          <h2>Game history:</h2>
+            <ul>{moves}</ul>
+          </div>
+        </div>
         </div>
       </div>
     );
