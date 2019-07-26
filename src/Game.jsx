@@ -71,21 +71,21 @@ class Game extends Component {
       <div className="frame">
         <h1>Tic Tac Toe</h1>
         <div className="game">
-        <div className="left-side">
-        <div className="status">{status}</div>
-          <div className="game-board clearfix">
-            <Board
-              squares={current.squares}
-              onClick={i => this.handleClick(i)}
-            />
+          <div className="left-side">
+            <div className="status">{status}</div>
+            <div className="game-board clearfix">
+              <Board
+                squares={current.squares}
+                onClick={i => this.handleClick(i)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="right-side">
-          <div className="game-info">
-          <h2>Game history:</h2>
-            <ul>{moves}</ul>
+          <div className="right-side">
+            <div className="game-info">
+              <h2>Game history:</h2>
+              <ul>{moves}</ul>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     );
@@ -103,12 +103,20 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6]
   ];
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      const winnerSquares = document.querySelectorAll(".square");
+      winnerSquares.forEach(winner => {
+        if (winner.textContent === squares[a]) {
+          console.log("winner", winner);
+          winner.style.color = "grey";
+        }
+      });
       return squares[a];
     }
-  }
+  } 
   return null;
 }
 
